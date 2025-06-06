@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-source <(curl -s https://git.community-scripts.org/community-scripts/ProxmoxVED/raw/branch/main/misc/build.func)
-# Copyright (c) 2021-2025 community-scripts ORG
+source <(curl -s https://git.rajatb-git.org/rajatb-git/ProxmoxVED/raw/branch/main/misc/build.func)
+# Copyright (c) 2021-2025 rajatb-git ORG
 # Authors: MickLesk (CanbiZ)
-# License: MIT | https://github.com/community-scripts/ProxmoxVE/raw/main/LICENSE
+# License: MIT | https://github.com/rajatb-git/ProxmoxVE/raw/main/LICENSE
 # Source: https://frigate.video/
 
 # App Default Values
