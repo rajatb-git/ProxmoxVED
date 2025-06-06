@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-source <(curl -s https://git.community-scripts.org/community-scripts/ProxmoxVED/raw/branch/main/misc/build.func)
+source <(curl -s https://git.community-scripts.org/rajatb-git/ProxmoxVED/raw/branch/main/misc/build.func)
 # Copyright (c) 2021-2025 community-scripts ORG
 # Author: MickLesk (CanbiZ)
 # License: MIT | https://github.com/community-scripts/ProxmoxVED/raw/main/LICENSE
@@ -20,33 +20,33 @@ color
 catch_errors
 
 function update_script() {
-  header_info
-  check_container_storage
-  check_container_resources
+    header_info
+    check_container_storage
+    check_container_resources
 
-  if [[ ! -f /usr/bin/zot ]]; then
-    msg_error "No ${APP} installation found!"
+    if [[ ! -f /usr/bin/zot ]]; then
+        msg_error "No ${APP} installation found!"
+        exit
+    fi
+
+    RELEASE=$(curl -fsSL https://api.github.com/repos/project-zot/zot/releases/latest | grep "tag_name" | awk '{print substr($2, 2, length($2)-3)}')
+    if [[ ! -f ~/.${APP} ]] || [[ "${RELEASE}" != "$(cat ~/.${APP})" ]]; then
+        msg_info "Stopping Zot service"
+        systemctl stop zot
+        msg_ok "Stopped Zot service"
+
+        msg_info "Updating Zot to ${RELEASE}"
+        curl -fsSL "https://github.com/project-zot/zot/releases/download/${RELEASE}/zot-linux-amd64" -o /usr/bin/zot
+        chmod +x /usr/bin/zot
+        chown root:root /usr/bin/zot
+        echo "${RELEASE}" >~/.${APP}
+        systemctl restart zot
+        msg_ok "Updated Zot to ${RELEASE}"
+    else
+        msg_ok "Zot is already up to date (${RELEASE})"
+    fi
+
     exit
-  fi
-
-  RELEASE=$(curl -fsSL https://api.github.com/repos/project-zot/zot/releases/latest | grep "tag_name" | awk '{print substr($2, 2, length($2)-3)}')
-  if [[ ! -f ~/.${APP} ]] || [[ "${RELEASE}" != "$(cat ~/.${APP})" ]]; then
-    msg_info "Stopping Zot service"
-    systemctl stop zot
-    msg_ok "Stopped Zot service"
-
-    msg_info "Updating Zot to ${RELEASE}"
-    curl -fsSL "https://github.com/project-zot/zot/releases/download/${RELEASE}/zot-linux-amd64" -o /usr/bin/zot
-    chmod +x /usr/bin/zot
-    chown root:root /usr/bin/zot
-    echo "${RELEASE}" >~/.${APP}
-    systemctl restart zot
-    msg_ok "Updated Zot to ${RELEASE}"
-  else
-    msg_ok "Zot is already up to date (${RELEASE})"
-  fi
-
-  exit
 }
 
 start
