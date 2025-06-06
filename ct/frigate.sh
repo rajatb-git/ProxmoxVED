@@ -15,6 +15,8 @@ var_os="${var_os:-debian}"
 var_version="${var_version:-11}"
 var_unprivileged="${var_unprivileged:-0}"
 
+echo "hello world"
+
 # App Output
 header_info "$APP"
 
